@@ -31,8 +31,25 @@ def main(this_dir):
     for dirpath, dirnames, filenames in os.walk(this_dir):
         for name in filenames:
             path = os.path.join(dirpath, name)
-            ips.append(find_ips(path))
 
+            """
+            We could use ips.extend() vs. append. This would result
+            in a flat list vs. a list of lists. I'm keeping this as is as a reminder
+            of the 'correct' way to flatten a list of lists and get uniq items
+            """
+            ips.append(find_ips(path))
+    """
+    This comprehension replaces the following code:
+    for list in ips:
+        for item in list:
+            some_list = item
+
+    uniq_ips = dict()
+    for ip in some_list:
+        uniq_ips[ip] = uniq.get(ip,0)+1
+    print(sorted(uniq_ips.keys()))
+
+    """
     [print(f"{x}") for x in sorted(set([x for y in ips for x in y].copy()))]
 
 
